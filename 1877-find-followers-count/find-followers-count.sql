@@ -1,6 +1,6 @@
 SELECT
     user_id,
-    COALESCE(COUNT(follower_id), 0) AS followers_count
+    COUNT(follower_id) AS followers_count
 FROM
     Followers
 GROUP BY
