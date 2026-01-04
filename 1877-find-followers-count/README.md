@@ -45,3 +45,16 @@ The followers of 0 are {1}
 The followers of 1 are {0}
 The followers of 2 are {0,1}
 </pre>
+
+## Approach
+- Grouped records by user_id to aggregate followers per user
+- Used COUNT(follower_id) to count the number of followers
+- COUNT works correctly since follower_id has no NULL values
+- Ordered the result by user_id in ascending order
+
+## Key Concepts
+- GROUP BY
+- ORDER BY
+
+## Solution
+See `find-followers-count.sql`
