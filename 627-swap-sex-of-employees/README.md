@@ -49,3 +49,23 @@ Salary table:
 (1, A) and (3, C) were changed from &#39;m&#39; to &#39;f&#39;.
 (2, B) and (4, D) were changed from &#39;f&#39; to &#39;m&#39;.
 </pre>
+
+🧠 Approach
+
+- The goal is to swap values in the sex column ('m' ↔ 'f') using one UPDATE statement.
+- Since no SELECT or temporary tables are allowed, the transformation must happen inline during the update.
+- A CASE expression is ideal here because it allows conditional value mapping within a single statement.
+
+Steps followed:
+
+1. Identify that swapping values requires conditional logic, not filtering.
+2. Use a CASE expression inside the SET clause:
+   - Convert 'm' to 'f'
+   - Convert 'f' to 'm'
+3. Execute a single UPDATE statement that processes all rows at once.
+
+This approach ensures:
+
+- No intermediate states
+- No extra queries
+- Full compliance with the problem constraints
