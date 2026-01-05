@@ -50,7 +50,7 @@ Salary table:
 (2, B) and (4, D) were changed from &#39;f&#39; to &#39;m&#39;.
 </pre>
 
-🧠 ##Approach
+## 🧠 Approach
 
 - The goal is to swap values in the sex column ('m' ↔ 'f') using one UPDATE statement.
 - Since no SELECT or temporary tables are allowed, the transformation must happen inline during the update.
