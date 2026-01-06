@@ -69,3 +69,26 @@ Department table:
 +------------+----------+--------+
 <strong>Explanation:</strong> Max and Jim both have the highest salary in the IT department and Henry has the highest salary in the Sales department.
 </pre>
+
+## 🧠 Approach
+
+Since the requirement is to find the **highest salary in each department**, a window function is the most suitable choice.
+
+1. **Join the required tables**  
+   Joined `Employee` and `Department` using `departmentId` to associate each employee with their department name.
+
+2. **Use a window function to rank salaries within each department**  
+   Applied `DENSE_RANK()` with `PARTITION BY departmentId` and ordered salaries in descending order.  
+   This assigns rank `1` to the highest salary in each department while handling ties correctly.
+
+3. **Encapsulate logic using a CTE**  
+   Wrapped the ranking logic inside a Common Table Expression (CTE) to keep the query clean and readable.
+
+4. **Filter only top-ranked employees**  
+   Queried the CTE and used a `WHERE` clause to select rows where `salary_rank = 1`, representing the highest-paid employees per department.
+
+5. **Final output**  
+   Selected only the required columns: `Department`, `Employee`, and `Salary`.
+
+### 📌 Key Learning
+Instead of explicitly selecting individual columns, using `*` along with window functions is also a valid approach when all base columns are required. This helps simplify queries in similar scenarios.
