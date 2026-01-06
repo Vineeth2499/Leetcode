@@ -83,3 +83,20 @@ Products with product_id = 3 is ordered in February a total of (2 + 3) = 5.
 Products with product_id = 4 was not ordered in February 2020.
 Products with product_id = 5 is ordered in February a total of (50 + 50) = 100.
 </pre>
+
+## 🧠 Approach
+
+1. **Join required tables**  
+   Joined `Products` and `Orders` using `product_id` to combine product details with order data.
+
+2. **Filter only February 2020 orders**  
+   Used date formatting (`TO_CHAR(order_date, 'YYYY-MM') = '2020-02'`) to restrict records to the required month and year, instead of hardcoding date ranges.
+
+3. **Aggregate total units per product**  
+   Calculated total units ordered for each product using `SUM(unit)` and grouped the results by `product_name`.
+
+4. **Apply condition on aggregated data**  
+   Used the `HAVING` clause to filter products with at least `100` units ordered, since aggregate conditions cannot be applied in the `WHERE` clause.
+
+5. **Final output**  
+   Returned product names along with their total units ordered in February 2020.
