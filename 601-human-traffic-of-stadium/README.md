@@ -52,3 +52,46 @@ Stadium table:
 The four rows with ids 5, 6, 7, and 8 have consecutive ids and each of them has &gt;= 100 people attended. Note that row 8 was included even though the visit_date was not the next day after row 7.
 The rows with ids 2 and 3 are not included because we need at least three consecutive ids.
 </pre>
+
+## 🧠 Approach
+
+At first glance, the problem looks simple since we only need records where `people >= 100`.  
+However, the real challenge is identifying **three or more rows with consecutive IDs**.
+
+### Step-by-step Logic
+
+1. **Filter valid records first**  
+   Filtered the table to include only rows where `people >= 100`, since other rows cannot be part of a valid consecutive sequence.
+
+2. **Identify consecutive IDs using a window function**  
+   Used `ROW_NUMBER()` ordered by `id` and calculated:
+
+This creates a constant value (`rw_num`) for consecutive IDs after filtering.
+
+####  id - ROW_NUMBER()
+
+This creates a constant value (`rw_num`) for consecutive IDs after filtering.
+
+3. **Why this works**  
+- When IDs are consecutive, the difference between `id` and `ROW_NUMBER()` remains the same.
+- Once an ID is skipped (because `people < 100`), the difference changes, forming a new group.
+- This allows grouping consecutive IDs logically without relying on dates.
+
+4. **Create a CTE for clarity**  
+Wrapped the filtering and window function logic inside a CTE (`people_count`) to improve readability and reuse.
+
+5. **Find valid consecutive groups**  
+Grouped records by `rw_num` and used:
+
+####  HAVING COUNT(id) >= 3
+
+to identify sequences with at least three consecutive IDs.
+
+6. **Final selection**  
+Selected rows from the CTE whose `rw_num` belongs to a group satisfying the consecutive condition, and ordered the output by `visit_date`.
+
+### 📌 Key Learnings
+- `id - ROW_NUMBER()` is a powerful technique to detect **consecutive sequences** in SQL.
+- Filtering before applying window functions directly affects row numbering.
+- `HAVING COUNT(id) >= 3` ensures only valid consecutive groups are selected.
+- Breaking the query and running it step by step makes complex logic easier to understand.
