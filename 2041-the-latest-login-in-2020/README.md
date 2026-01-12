@@ -52,3 +52,22 @@ User 8 logged into their account 2 times in 2020, once in February and once in D
 User 2 logged into their account 2 times but only once in 2020, so we include this login in the result table.
 User 14 did not login in 2020, so we do not include them in the result table.
 </pre>
+
+## 🧠 Approach
+
+1. **Identify the latest login per user**  
+   Since the requirement is to fetch the *latest* login timestamp, used the aggregate function `MAX(time_stamp)`.
+
+2. **Group records by user**  
+   Applied `GROUP BY user_id` so that the maximum timestamp is calculated separately for each user.
+
+3. **Filter only logins from the year 2020**  
+   Used `EXTRACT(YEAR FROM time_stamp) = 2020` in the `WHERE` clause to ensure:
+   - Only logins from 2020 are considered
+   - Users with no logins in 2020 are automatically excluded
+
+4. **Final output**  
+   Returned each `user_id` along with their most recent login timestamp (`last_stamp`) in the year 2020.
+
+### 📌 Key Takeaway
+When finding the latest event within a specific time period, **filtering by date first and then aggregating** ensures both correctness and simplicity.
