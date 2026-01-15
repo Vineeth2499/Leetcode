@@ -92,3 +92,53 @@ In the Sales department:
 <ul>
 	<li>There are no employees with the <strong>exact</strong> same name, salary <em>and</em> department.</li>
 </ul>
+
+## 🧠 Approach
+
+The requirement is to identify employees who earn within the **top three unique salaries per department**.  
+This naturally points to using **window functions**.
+
+### Step-by-step Logic
+
+1. **Join the required tables**  
+   Joined `Employee` and `Department` using the correct relationship:
+This allows access to department names along with employee details.
+
+2. **Select required output columns**  
+Selected:
+- Department name
+- Employee name
+- Salary  
+as specified in the expected output.
+
+3. **Rank salaries within each department**  
+Used `DENSE_RANK()` with:
+`DENSE_RANK()` is chosen over `RANK()` to ensure:
+- Employees with the same salary share the same rank
+- No rank values are skipped, which is required for identifying the top three *unique* salaries
+
+4. **Encapsulate logic using a CTE**  
+Placed the ranking logic inside a CTE to keep the query readable and to enable filtering on the computed rank.
+
+5. **Filter top three salaries per department**  
+Queried the CTE and filtered rows where:
+This ensures all employees earning within the top three unique salaries per department are included.
+
+### 📌 Key Learnings
+
+- **Correct joins are critical**  
+Accidentally joining incorrect columns (e.g., `Employee.id` to `Department.id`) can lead to:
+- Incorrect or meaningless results
+- Performance issues
+- Hard-to-detect data bugs  
+Always verify foreign key relationships before joining tables.
+
+- **Window functions cannot be used in the WHERE clause**  
+Window functions are evaluated *after* the `WHERE` clause.  
+To filter on window function results, they must be computed first (via a CTE or subquery).
+
+- **Simple problems can still expose important fundamentals**  
+This problem reinforced the importance of:
+- Understanding schema relationships
+- Choosing the right ranking function
+- Respecting SQL execution order
