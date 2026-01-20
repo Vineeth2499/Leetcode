@@ -52,3 +52,26 @@ Employees table:
 Employee 1 has three events: two on day 2020-11-28 with a total of (32 - 4) + (200 - 55) = 173, and one on day 2020-12-03 with a total of (42 - 1) = 41.
 Employee 2 has two events: one on day 2020-11-28 with a total of (33 - 3) = 30, and one on day 2020-12-09 with a total of (74 - 47) = 27.
 </pre>
+
+## 🧠 Approach
+
+The requirement is to calculate the **total time spent by each employee per day**, considering that an employee may enter and leave the office multiple times on the same day.
+
+1. **Calculate time spent per entry**  
+   For each record, computed the time spent in the office as:
+This gives the duration for a single entry–exit event.
+
+2. **Use a CTE for clarity**  
+Stored the per-entry calculation inside a CTE to make the logic easier to read and separate calculation from aggregation.
+
+3. **Aggregate time per employee per day**  
+Grouped the data by `event_day` and `emp_id`, and used `SUM()` to add up all entry durations for the same employee on the same day.
+
+4. **Final output**  
+Returned:
+- `event_day` as `day`
+- `emp_id`
+- Total time spent in minutes (`total_time`)
+
+### 📌 Key Takeaway
+When multiple events exist per entity and per day, the correct approach is to **calculate row-level metrics first and then aggregate** them at the required grain.
