@@ -57,3 +57,27 @@ n = 2
 | null                   |
 +------------------------+
 </pre>
+
+## 🧠 Approach
+
+The goal is to find the **nth highest distinct salary** from the `Employee` table and return `NULL` if such a salary does not exist.
+
+1. **Rank salaries in descending order**  
+   Used the `DENSE_RANK()` window function to rank salaries:
+`DENSE_RANK()` ensures that duplicate salaries receive the same rank without skipping rank values.
+
+2. **Handle distinct salary requirement**  
+Since multiple employees can have the same salary, ranking is applied on salary values rather than employee rows.
+
+3. **Encapsulate ranking logic in a subquery**  
+Wrapped the ranking logic inside a subquery to allow filtering based on the computed rank.
+
+4. **Select the nth highest salary**  
+Filtered rows where:
+and applied `LIMIT 1` to return a single value.
+
+5. **Graceful handling of missing ranks**  
+If fewer than `n` distinct salaries exist, the query returns no rows, causing the function to return `NULL` as required.
+
+### 📌 Key Insight
+`DENSE_RANK()` is ideal for **nth highest problems** because it preserves ranking order while correctly handling duplicate values.
