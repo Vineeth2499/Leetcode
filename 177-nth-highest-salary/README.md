@@ -60,24 +60,25 @@ n = 2
 
 ## 🧠 Approach
 
-The goal is to find the **nth highest distinct salary** from the `Employee` table and return `NULL` if such a salary does not exist.
+The goal is to return the **nth highest distinct salary** from the `Employee` table and return `NULL` if such a rank does not exist.
 
-1. **Rank salaries in descending order**  
-   Used the `DENSE_RANK()` window function to rank salaries:
-`DENSE_RANK()` ensures that duplicate salaries receive the same rank without skipping rank values.
+1. **Use a SQL function for reusability**  
+   Implemented a SQL function `getNthHighestSalary(n)` that accepts `n` as a parameter.  
+   The function acts as a wrapper to return the salary corresponding to the nth rank.
 
-2. **Handle distinct salary requirement**  
-Since multiple employees can have the same salary, ranking is applied on salary values rather than employee rows.
+2. **Rank salaries using a window function**  
+   Applied `DENSE_RANK()` ordered by salary in descending order to assign ranks to **distinct salary values**.
+   `DENSE_RANK()` ensures duplicate salaries share the same rank without skipping rank values.
 
 3. **Encapsulate ranking logic in a subquery**  
-Wrapped the ranking logic inside a subquery to allow filtering based on the computed rank.
+   Used a subquery to compute salary ranks before applying any filtering, keeping the query readable and logically structured.
 
-4. **Select the nth highest salary**  
-Filtered rows where:
-and applied `LIMIT 1` to return a single value.
+4. **Return the nth ranked salary**  
+   Filtered the ranked result where:
+   rnk = n and returned the corresponding salary.
 
-5. **Graceful handling of missing ranks**  
-If fewer than `n` distinct salaries exist, the query returns no rows, causing the function to return `NULL` as required.
+5. **Handle missing ranks gracefully**  
+   If fewer than `n` distinct salaries exist, the subquery returns no rows, causing the function to return `NULL` as required.
 
 ### 📌 Key Insight
-`DENSE_RANK()` is ideal for **nth highest problems** because it preserves ranking order while correctly handling duplicate values.
+Wrapping ranking logic inside a function allows the query to behave like a reusable utility, while `DENSE_RANK()` ensures accurate handling of duplicate salary values.
