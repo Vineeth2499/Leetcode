@@ -53,3 +53,28 @@ Sales table:
 | 200        | 2011       | 15       | 9000  |
 +------------+------------+----------+-------+
 </pre>
+
+## 🧠 Approach
+
+The requirement is to return **all sales records from the first year each product was sold**.
+
+1. **Identify the first year per product**  
+   Since a product can appear in multiple years, used:
+Grouped by `product_id` to determine the earliest year each product was sold.
+
+2. **Filter sales from the first year only**  
+Used a tuple-based filter:
+To match each product with its corresponding first year.
+
+3. **Return all sales from that year**  
+Because a product can have multiple sales entries in the same year, this approach correctly returns **all rows** that occurred in the first year.
+
+4. **Final output**  
+Selected:
+- `product_id`
+- First year of sale (`first_year`)
+- `quantity`
+- `price`
+
+### 📌 Key Insight
+When a problem requires returning **full records associated with a group-level minimum**, the correct approach is to first compute the minimum value per group and then filter the original table using that result.
