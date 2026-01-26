@@ -55,3 +55,29 @@ DailySales table:
 For 2020-12-8, toyota gets leads = [0, 1] and partners = [0, 1, 2] while honda gets leads = [1, 2] and partners = [1, 2].
 For 2020-12-7, toyota gets leads = [0] and partners = [1, 2] while honda gets leads = [0, 1, 2] and partners = [1, 2].
 </pre>
+
+## 🧠 Approach
+
+The requirement is to compute, **for each date and product**, the number of **distinct leads** and **distinct partners**.
+
+1. **Group data at the required level**  
+   Grouped the records by:
+Since the counts are needed per day and per product.
+
+2. **Count distinct leads**  
+Used:
+To calculate the number of unique leads for each `(date_id, make_name)` combination.
+
+3. **Count distinct partners**  
+Used:
+To calculate the number of unique partners for the same group.
+
+4. **Final output**  
+Returned:
+- `date_id`
+- `make_name`
+- number of distinct leads (`unique_leads`)
+- number of distinct partners (`unique_partners`)
+
+### 📌 Key Insight
+When a table may contain duplicate rows and unique counts are required, combining **GROUP BY** with **COUNT(DISTINCT …)** is the most direct and reliable approach.
