@@ -66,30 +66,31 @@ Each row represents a prompt submitted by a user to an AI system along with the 
 	<li><strong>User 1</strong>:
 
 	<ul>
-		<li>Total prompts = 3</li>
-		<li>Average tokens = (120 + 80 + 200) / 3 = 133.33</li>
-		<li>Has a prompt with 200 tokens, which is greater than the average</li>
-		<li>Included in the result</li>
-	</ul>
+	<li><strong>User 1</strong>:
+		<ul>
+			<li>Total prompts = 3</li>
+			<li>Average tokens = (120 + 80 + 200) / 3 = 133.33</li>
+			<li>Has a prompt with 200 tokens, which is greater than the average</li>
+			<li>Included in the result</li>
+		</ul>
 	</li>
 	<li><strong>User 2</strong>:
-	<ul>
-		<li>Total prompts = 2 (less than the required minimum)</li>
-		<li>Excluded from the result</li>
-	</ul>
+		<ul>
+			<li>Total prompts = 2 (less than the required minimum)</li>
+			<li>Excluded from the result</li>
+		</ul>
 	</li>
 	<li><strong>User 3</strong>:
-	<ul>
-		<li>Total prompts = 4</li>
-		<li>Average tokens = (300 + 250 + 180 + 220) / 4 = 237.5</li>
-		<li>Has prompts with 300 and 250 tokens, both greater than the average</li>
-		<li>Included in the result</li>
-	</ul>
+		<ul>
+			<li>Total prompts = 4</li>
+			<li>Average tokens = (300 + 250 + 180 + 220) / 4 = 237.5</li>
+			<li>Has prompts with 300 and 250 tokens, both greater than the average</li>
+			<li>Included in the result</li>
+		</ul>
 	</li>
 </ul>
 
 <p>The Results table is ordered by avg_tokens in descending order, then by user_id in ascending order</p>
-</div>
 
 ## 🧠 Approach
 
