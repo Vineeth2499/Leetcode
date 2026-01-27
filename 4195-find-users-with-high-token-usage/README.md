@@ -90,3 +90,33 @@ Each row represents a prompt submitted by a user to an AI system along with the 
 
 <p>The Results table is ordered by avg_tokens in descending order, then by user_id in ascending order</p>
 </div>
+
+## 🧠 Approach
+
+This problem combines **group-level aggregation** with a condition that depends on
+**row-level behavior**, which makes it easy to write a query that *runs* but fails edge cases.
+
+---
+
+### 🔍 Problem Breakdown
+
+For each `user_id`, we need to:
+- Count total prompts submitted
+- Calculate average tokens used per prompt
+- Include only users who:
+  - Have submitted **at least 3 prompts**
+  - Have **at least one prompt** where token usage is **greater than their own average**
+
+---
+
+### 💡 Key Insight
+
+The condition  
+> *“at least one prompt has tokens greater than the user's average”*  
+
+does **not** mean filtering rows early.
+
+Instead, it translates to a **group-level check**:
+
+```text
+Does MAX(tokens) > AVG(tokens) for this user?
