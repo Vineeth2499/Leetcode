@@ -73,3 +73,32 @@ Employees table:
 +-------------+---------+---------------+-------------+
 
 </pre>
+
+## 🧠 Approach
+
+This problem looks straightforward on the surface, but it hides an important detail about **rounding behavior** that can easily cause incorrect results in edge cases.
+
+---
+
+### 🔍 Problem Breakdown
+
+We are given an `Employees` table where:
+- Each employee may report to another employee (`reports_to`)
+- A **manager** is defined as an employee who has **at least one direct report**
+
+For each manager, we need to:
+1. Count the number of employees who report **directly** to them
+2. Calculate the **average age** of those reports
+3. Round the average age to the **nearest integer**
+4. Return results ordered by `employee_id`
+
+---
+
+### 💡 Core Logic
+
+- The table needs to be **self-joined**:
+  - One copy represents employees (`e`)
+  - One copy represents managers (`m`)
+- The join condition is:
+  ```sql
+  e.reports_to = m.employee_id
