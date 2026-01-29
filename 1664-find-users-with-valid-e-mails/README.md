@@ -58,3 +58,45 @@ The mail of user 5 has the # sign which is not allowed.
 The mail of user 6 does not have the leetcode domain.
 The mail of user 7 starts with a period.
 </pre>
+
+## 🧠 Approach
+
+The main challenge in this problem is validating e-mail addresses based on **custom rules**, not generic e-mail standards.  
+In particular, the prefix has strict character constraints and must **start with a letter**, while the domain must be exactly `@leetcode.com`.
+
+---
+
+### 🔍 Validation Rules Breakdown
+
+A valid e-mail must satisfy **all** of the following:
+
+1. The prefix:
+   - Starts with a letter (`A–Z` or `a–z`)
+   - May contain:
+     - letters
+     - digits
+     - underscore (`_`)
+     - period (`.`)
+     - dash (`-`)
+2. The domain:
+   - Must be exactly `@leetcode.com`
+3. No extra characters are allowed before or after the valid pattern
+
+---
+
+### 💡 Key Insight
+
+This problem cannot be solved reliably using `LIKE` alone, because:
+- `LIKE` cannot enforce *starting character rules*
+- `LIKE` cannot restrict the allowed character set precisely
+
+Regular expressions are the correct tool here.
+
+---
+
+### ✅ Final SQL Solution (PostgreSQL)
+
+```sql
+SELECT *
+FROM Users
+WHERE mail ~ '^[A-Za-z][A-Za-z0-9._-]*@leetcode\.com$';
