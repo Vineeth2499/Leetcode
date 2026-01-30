@@ -55,3 +55,33 @@ Activity table:
 +------------+--------------+ 
 <strong>Explanation:</strong> Note that we do not care about days with zero active users.
 </pre>
+
+## 🧠 Approach
+
+This problem asks for the **daily active user (DAU)** count over a fixed 30-day window ending on **2019-07-27**.
+
+A user is considered *active* on a given day if they performed **at least one activity**, regardless of the activity type or the number of times they were active on that day.
+
+---
+
+### 🔍 Problem Breakdown
+
+To solve this, we need to:
+
+1. Restrict the data to the **last 30 days**, including `2019-07-27`
+2. Treat **any activity** as valid activity
+3. Count **unique users per day**, not total activities
+4. Ignore days where there were **no active users**
+
+---
+
+### 💡 Key Insights
+
+- The table may contain **multiple rows per user per day**, so:
+  - We must use `COUNT(DISTINCT user_id)` to avoid double counting
+- The 30-day window is calculated as:
+  - `2019-07-27` (inclusive)
+  - back to `2019-06-29` (`27 - 29 days`)
+- Since days with zero activity do not need to be shown, there is **no need to generate a calendar table**
+
+---
