@@ -73,3 +73,28 @@ Average selling price = Total Price of Product / Number of products sold.
 Average selling price for product 1 = ((100 * 5) + (15 * 20)) / 115 = 6.96
 Average selling price for product 2 = ((200 * 15) + (30 * 30)) / 230 = 16.96
 </pre>
+
+## 🧠 Approach
+
+To compute the average selling price for each product, we need to account for the fact that **product prices change over time** and each sale must be evaluated against the **price that was valid on the purchase date**.
+
+The correct approach is:
+
+1. **Join sales with prices using a date range**
+   - A sale should be matched only with the price record where the `purchase_date` falls between `start_date` and `end_date`
+   - Joining only on `product_id` would incorrectly combine sales with all historical prices
+
+2. **Use a LEFT JOIN**
+   - Ensures all products are included in the result
+   - Products with no sales should still appear with an average price of `0`
+
+3. **Calculate a weighted average**
+   - Revenue is calculated as `units × price`
+   - The average selling price is:
+     ```
+     total_revenue / total_units
+     ```
+     
+4. **Handle edge cases**
+   - `IFNULL` is used to return `0` when a product has no sales
+   - The final result is rounded to 2 decimal places
