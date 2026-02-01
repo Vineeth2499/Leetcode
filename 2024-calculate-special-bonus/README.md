@@ -50,3 +50,24 @@ The employees with IDs 2 and 8 get 0 bonus because they have an even employee_id
 The employee with ID 3 gets 0 bonus because their name starts with &#39;M&#39;.
 The rest of the employees get a 100% bonus.
 </pre>
+
+## 🧠 Approach
+
+This problem requires calculating a conditional bonus for each employee based on two simple rules:
+
+1. The employee ID must be **odd**
+2. The employee name must **not start with the letter 'M'**
+
+If both conditions are satisfied, the employee receives a bonus equal to **100% of their salary**. Otherwise, the bonus is `0`.
+
+---
+
+### 💡 Key Observations
+
+- Since every employee must appear in the result, **no filtering is needed**
+- The bonus logic is purely conditional, making a `CASE` expression the most appropriate tool
+- Modulo (`%`) is used to check whether the employee ID is odd
+- `NOT LIKE 'M%'` ensures names starting with `'M'` are excluded
+- Ordering by `employee_id` is required in the final output
+
+---
