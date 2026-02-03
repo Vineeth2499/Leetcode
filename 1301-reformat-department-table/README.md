@@ -47,3 +47,28 @@ Department table:
 <strong>Explanation:</strong> The revenue from Apr to Dec is null.
 Note that the result table has 13 columns (1 for the department id + 12 for the months).
 </pre>
+
+## 🧠 Approach
+
+The requirement is to **pivot monthly revenue values into separate columns** for each department.
+
+1. **Group data by department**  
+   Grouped the records by `id` since the output should contain one row per department.
+
+2. **Pivot month values using conditional aggregation**  
+   Used `CASE WHEN` expressions inside `SUM()` to transform row-level month values into individual revenue columns:
+This pattern is repeated for all twelve months.
+
+3. **Handle missing month data**  
+When a department does not have revenue for a particular month, the `CASE` expression returns `NULL`, which correctly appears as `NULL` in the output.
+
+4. **Aggregate safely using SUM()**  
+Although `(id, month)` is unique, `SUM()` ensures the query remains correct and robust even if additional rows exist for the same department and month.
+
+5. **Final output**  
+Returned:
+- `id`
+- one revenue column for each month from January to December
+
+### 📌 Key Insight
+Conditional aggregation using `SUM(CASE WHEN ...)` is a reliable technique for **pivoting categorical values into columns** when native `PIVOT` functionality is unavailable or limited.
