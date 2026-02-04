@@ -67,3 +67,40 @@ Dog queries poor_ query_percentage is (1 / 3) * 100 = 33.33
 Cat queries quality equals ((2 / 5) + (3 / 3) + (4 / 7)) / 3 = 0.66
 Cat queries poor_ query_percentage is (1 / 3) * 100 = 33.33
 </pre>
+
+## 🧠 Approach
+
+The requirement is to compute two metrics for each query_name:
+- *Query quality*: average of (rating / position)
+- *Poor query percentage*: percentage of queries with rating < 3
+
+1. *Partition calculations by query name*  
+   Used window functions with:
+to ensure all calculations are performed independently for each query.
+
+2. *Calculate query quality*  
+Computed the quality metric as:
+Used floating-point division (rating * 1.0 / position) to avoid integer division and rounded the result to two decimal places.
+
+3. *Calculate poor query percentage*  
+Counted poor queries using a conditional expression:
+Used floating-point division (rating * 1.0 / position) to avoid integer division and rounded the result to two decimal places.
+
+3. *Calculate poor query percentage*  
+Counted poor queries using a conditional expression:
+Divided this count by the total number of queries per query_name, multiplied by 100, and rounded to two decimal places.
+
+4. *Use window functions instead of GROUP BY*  
+Applied window functions for both metrics so that multiple aggregations could be computed without collapsing rows.
+
+5. *Remove duplicate rows in final output*  
+Used DISTINCT(query_name) to return a single result row per query name.
+
+6. *Final output*  
+Returned:
+- query_name
+- quality
+- poor_query_percentage
+
+### 📌 Key Insight
+Window functions allow computing multiple aggregated metrics over the same partition *without grouping*, making them ideal for analytical queries like this.
