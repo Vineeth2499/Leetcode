@@ -65,3 +65,47 @@ Each row contains a user&#39;s unique ID and email address.
 
 <p>Result table is ordered by user_id in ascending order.</p>
 </div>
+
+## 🧠 Approach
+
+This problem is about validating e-mail addresses based on a **specific set of rules**, not general e-mail standards.  
+To ensure correctness and avoid partial matches, the solution uses **regular expressions** to validate the entire structure of the email string.
+
+---
+
+### 🔍 Validation Rules Breakdown
+
+A valid email must satisfy **all** of the following:
+
+1. Contains **exactly one `@` symbol**
+2. Ends with **`.com`**
+3. The part **before `@`**:
+   - Contains only letters, digits, or underscores
+4. The part **after `@` and before `.com`**:
+   - Contains only letters
+5. No extra characters are allowed before or after the valid pattern
+
+---
+
+### 💡 Key Insight
+
+Using `LIKE` alone is insufficient because:
+- It cannot enforce **character-level restrictions**
+- It cannot guarantee **exactly one `@`**
+- It allows partial matches
+
+Regular expressions allow us to:
+- Define allowed characters precisely
+- Enforce start (`^`) and end (`$`) boundaries
+- Validate the full email structure in a single condition
+
+---
+
+^                       -- start of string
+[a-zA-Z0-9_]+           -- prefix: alphanumeric characters or underscore
+@                       -- exactly one '@' symbol
+[a-zA-Z]+               -- domain name: letters only
+\.com                   -- must end with '.com'
+$                       -- end of string
+
+---
