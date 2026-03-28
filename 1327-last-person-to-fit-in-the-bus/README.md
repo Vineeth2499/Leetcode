@@ -60,3 +60,31 @@ Queue table:
 | 6    | 1  | Winston   | 500    | ___          |
 +------+----+-----------+--------+--------------+
 </pre>
+
+### 🎯 Objective
+Find the **last person in the queue** who can board the bus **without exceeding the total weight limit (1000 kg)**.
+
+- People board the bus in order of `turn`
+- Each person adds their `weight` to the cumulative total
+- Once the total exceeds 1000 kg, no further people can board
+
+---
+
+## 🔍 Key Idea
+
+This is a **running total (cumulative sum)** problem.
+
+We need to:
+1. Track the **cumulative weight** as people board
+2. Identify the **last valid person** before the limit is exceeded
+
+---
+
+## 💡 Approach
+
+### 1️⃣ Compute Running Total
+
+Used a **window function** to calculate cumulative weight:
+
+```sql
+SUM(weight) OVER (ORDER BY turn) AS total_weight
