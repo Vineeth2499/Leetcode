@@ -21,3 +21,21 @@ FROM
   order_details
 GROUP BY
   customer_id
+
+-------------------------------------------
+
+SELECT
+  customer_id,
+  COUNT(order_id) AS total_orders,
+  ROUND(
+      SUM(
+          CASE 
+              WHEN order_timestamp BETWEEN '11:00:00' AND '14:00:00'
+                OR order_timestamp BETWEEN '18:00:00' AND '21:00:00'
+              THEN 1 
+              ELSE 0 
+          END
+      ) * 100.0 / COUNT(order_id),
+  2) AS peak_hour_percentage
+FROM restaurant_orders
+GROUP BY customer_id;
