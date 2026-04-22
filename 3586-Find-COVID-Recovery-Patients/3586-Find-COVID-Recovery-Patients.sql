@@ -1,18 +1,32 @@
+WITH first_positive AS (
+    SELECT
+        patient_id,
+        MIN(test_date) AS first_positive_date
+    FROM covid_tests
+    WHERE result = 'Positive'
+    GROUP BY patient_id
+),
+first_negative_after AS (
+    SELECT
+        c.patient_id,
+        MIN(c.test_date) AS first_negative_date
+    FROM covid_tests c
+    INNER JOIN first_positive fp
+        ON c.patient_id = fp.patient_id
+        AND c.test_date > fp.first_positive_date
+    WHERE c.result = 'Negative'
+    GROUP BY c.patient_id
+)
 SELECT
-   p.patient_id,
-   patient_name,
-   age,
-   MAX(CASE WHEN result = 'Negative' THEN test_date END) -
-   MAX(CASE WHEN result = 'Positive' THEN test_date END) AS recovery_time
-FROM
-   patients p
-LEFT JOIN
-   covid_tests c ON p.patient_id = c.patient_id
-GROUP BY
-   1,
-   2,
-   3
-HAVING
-   recovery_time IS NOT NULL
+    p.patient_id,
+    p.patient_name,
+    p.age,
+    DATEDIFF(fna.first_negative_date, fp.first_positive_date) AS recovery_time
+FROM patients p
+INNER JOIN first_positive fp
+    ON p.patient_id = fp.patient_id
+INNER JOIN first_negative_after fna
+    ON p.patient_id = fna.patient_id
 ORDER BY
-   recovery_time ASC, 1 ASC
+    recovery_time ASC,
+    p.patient_name ASC;
